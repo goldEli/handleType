@@ -1,10 +1,10 @@
 {
-  "name": "ifunHandleType",
+  "name": "ifunhandletype",
   "version": "1.0.0",
   "description": "check chinese",
   "main": "./lib/index.js",
   "bin": {
-    "ifunHandleType": "./lib/index.js"
+    "ifunhandletype": "./lib/index.js"
   },
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts -h",
