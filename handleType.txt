@@ -1,26 +1,13 @@
-approvalStatus	审批状态（0 审批中 1 已通过 2 已拒绝 3 已撤销）	query	false	
-integer(int32)
-deptId	部门id	query	false	
-integer(int64)
-endDate	结束日期(入职日期/离职日期)	query	false	
-string
-entryStatus	入职状态 0 待入职（入职管理列表） 1 已入职（最近入职的人） 2 已放弃（放弃入职的人）	query	false	
-integer(int32)
-jobId	职位id	query	false	
-integer(int64)
-jobStatus	员工状态 0 试用 1 正式	query	false	
-integer(int32)
-pageNumber	当前页:1、2、3	query	false	
-integer(int64)
-pageSize	每页显示条数:10,20,30,50	query	false	
-integer(int64)
-phone	手机号码	query	false	
-string
-source	来源 0 审批来源 1 手动添加	query	false	
-integer(int32)
-startDate	开始日期(入职日期/离职日期)	query	false	
-string
-userName	姓名	query	false	
-string
-userType	员工类型 0 全职 1 兼职 2 实习 3 临时工	query	false	
-integer(int32)
+deptId	入职部门id	integer	
+deptName	入职部门名称	string	
+entryDate	入职日期	string	
+giveupReason	放弃入职原因	string	
+id	主键ID	integer	
+jobId	职位id	integer	
+jobName	职位名称	string	
+jobStatus	员工状态 0 试用 1 正式	string	
+phone	手机号码	string	
+probationPeriod		integer	
+remark	备注	string	
+userName	姓名	string	
+userType	员工类型 0 全职 1 兼职 2 实习 3 临时工 4 劳务派遣 5 劳务外包 6 其他	string

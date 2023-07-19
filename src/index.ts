@@ -33,27 +33,36 @@ function readFile(path: string) {
     });
   });
 }
-
+function hasChinese(str: string) {
+  var reg = /[\u4e00-\u9fa5]/; // 使用 Unicode 编码范围匹配中文字符
+  return reg.test(str);
+}
 async function main() {
   const dir = path.join(process.cwd(), "./handleType.txt");
   const data = (await readFile(dir)) as string;
   let temp = data.split("\n");
 
-  const arr: string[] = [];
-  let index = 0;
-  while (index < temp.length) {
-    arr.push(temp[index]?.trim() + "\t" + temp[index + 1]?.trim());
-    index += 2;
-  }
+  const arr: string[] = temp;
+//   let index = 0;
+//   while (index < temp.length) {
+//     arr.push(temp[index]?.trim() + "\t" + temp[index + 1]?.trim());
+//     index += 2;
+//   }
 
   const info = arr
     .map((item) => {
-      const [name, comment, method, require, type] = item.split("\t");
+      const [name, ...otherWords] = item.split("\t");
+      const comment = otherWords.find((item) => hasChinese(item));
+      const type = otherWords.find((item) =>
+        ["string", "integer", "boolean"].some((i) => item.includes(i))
+      );
+      const required = otherWords.find((item) =>
+        ["false", "true"].some((i) => item.includes(i))
+      );
       return {
         name,
         comment,
-        method,
-        require,
+        required,
         type,
       };
     })
@@ -62,9 +71,10 @@ async function main() {
   let str = "";
 
   for (const item of info) {
-    str += `// ${item.comment} \n${item.name}${
-      item.require === "false" ? "?:" : ":"
-    } ${item.type.includes("integer") ? "number" : item.type}\n`;
+    const commentStr = item.comment ? `// ${item.comment}` : ''
+    str += `${commentStr} \n${item.name}${
+      item.required === "false" ? "?:" : ":"
+    } ${item?.type?.includes("integer") ? "number" : item.type}\n`;
   }
 
   console.log(str);
