@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 
+// import { createFuncName, createTypeName } from "./utils";
+
 const chalk = require("chalk");
 
-const { Command } = require("commander"); // add this line
+// const { Command } = require("commander"); // add this line
 const figlet = require("figlet");
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
 //add the following line
-const program = new Command();
+// const program = new Command();
 
 console.log(figlet.textSync("Handle Type"));
+const { default: dtsgenerator, parseSchema } = require("dtsgenerator");
+const ncp = require("copy-paste");
 
 // program
 //   .version("1.0.0")
@@ -19,64 +23,28 @@ console.log(figlet.textSync("Handle Type"));
 //   .option("-h, --help", "output usage information")
 //   .parse(process.argv);
 
-// const options = program.opts();
-
-// console.log({ options });
-function readFile(path: string) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, "utf8", (err: any, data: string) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      resolve(data);
-    });
-  });
-}
-function hasChinese(str: string) {
-  var reg = /[\u4e00-\u9fa5]/; // 使用 Unicode 编码范围匹配中文字符
-  return reg.test(str);
-}
 async function main() {
-  const dir = path.join(process.cwd(), "./handleType.txt");
-  const data = (await readFile(dir)) as string;
-  let temp = data.split("\n");
-
-  const arr: string[] = temp;
-//   let index = 0;
-//   while (index < temp.length) {
-//     arr.push(temp[index]?.trim() + "\t" + temp[index + 1]?.trim());
-//     index += 2;
-//   }
-
-  const info = arr
-    .map((item) => {
-      const [name, ...otherWords] = item.split("\t");
-      const comment = otherWords.find((item) => hasChinese(item));
-      const type = otherWords.find((item) =>
-        ["string", "integer", "boolean"].some((i) => item.includes(i))
-      );
-      const required = otherWords.find((item) =>
-        ["false", "true"].some((i) => item.includes(i))
-      );
-      return {
-        name,
-        comment,
-        required,
-        type,
-      };
-    })
-    .filter((item) => !!item.name);
-
-  let str = "";
-
-  for (const item of info) {
-    const commentStr = item.comment ? `// ${item.comment}` : ''
-    str += `${commentStr} \n${item.name}${
-      item.required === "false" ? "?:" : ":"
-    } ${item?.type?.includes("integer") ? "number" : item.type}\n`;
+  const text = ncp.paste();
+  let openAPI;
+  try {
+    openAPI = JSON.parse(text);
+  } catch (error) {
+    console.log(chalk.red("请复制符合OpenAPI结构数据！！！"));
+    return;
   }
-
-  console.log(str);
+  dtsgenerator({
+    contents: [parseSchema(openAPI)],
+    config: {
+      /* Config object */
+    },
+  })
+    .then((content: string) => {
+      /* Do someting with parsed content */
+      console.log(chalk.green(content));
+    })
+    .catch((err: any) => {
+      console.log(chalk.red(err));
+      /* Handle errors */
+    });
 }
 main();

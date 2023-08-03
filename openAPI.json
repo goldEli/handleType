@@ -1,0 +1,144 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "基于REST接口风格工单接口文档",
+      "version": "1.0",
+      "title": "定星科技 · 接口文档",
+      "termsOfService": "https://www.dx.com/",
+      "contact": {
+        "name": "定星科技",
+        "url": "https://www.dx.com/",
+        "email": "1352255400@qq.com"
+      },
+      "license": {
+        "name": "Apache License Version 2.0"
+      }
+    },
+    "host": "dev.staryuntech.com",
+    "basePath": "/api",
+    "schemes": [],
+    "consumes": [
+      "*/*"
+    ],
+    "produces": [
+      "*/*"
+    ],
+    "paths": {
+      "/company/companyUserEntry/handle": {
+        "post": {
+          "tags": [
+            "人事管理-入职管理"
+          ],
+          "summary": "手动办理入职",
+          "operationId": "handleUsingPOST",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "*/*"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "dto",
+              "description": "dto",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/CompanyUserEntryEditDto",
+                "originalRef": "CompanyUserEntryEditDto"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/R«Void»",
+                "originalRef": "R«Void»"
+              }
+            },
+            "201": {
+              "description": "Created"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "CompanyUserEntryEditDto": {
+        "type": "object",
+        "properties": {
+          "deptId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "入职部门id",
+            "refType": null
+          },
+          "entryDate": {
+            "type": "string",
+            "description": "入职日期",
+            "refType": null
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "主键ID（传入该值为编辑）",
+            "refType": null
+          },
+          "jobId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "职位id",
+            "refType": null
+          },
+          "jobStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "员工状态 0 试用 1 正式",
+            "refType": null
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号码",
+            "refType": null
+          },
+          "userName": {
+            "type": "string",
+            "description": "姓名",
+            "refType": null
+          },
+          "userType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "员工类型 0 全职 1 兼职 2 实习 3 临时工 4 劳务派遣 5 劳务外包 6 其他",
+            "refType": null
+          }
+        },
+        "title": "CompanyUserEntryEditDto"
+      },
+      "R«Void»": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "错误码：0成功，其他失败"
+          },
+          "msg": {
+            "type": "string",
+            "description": "错误信息"
+          }
+        },
+        "title": "R«Void»"
+      }
+    }
+  }
